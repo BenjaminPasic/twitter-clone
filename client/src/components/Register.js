@@ -65,6 +65,7 @@ export default function Register() {
           variant="outlined"
           size="small"
           required
+          type="text"
           error={userDataError.username}
         />
         <TextField
@@ -74,6 +75,7 @@ export default function Register() {
           label="Email"
           variant="outlined"
           size="small"
+          type="email"
           required
           error={userDataError.email}
         />
@@ -86,6 +88,7 @@ export default function Register() {
           size="small"
           required
           error={userDataError.password}
+          type="password"
           helperText={
             userDataError.repeatPasswordErrorMessage
               ? userDataError.repeatPasswordErrorMessage
@@ -99,6 +102,7 @@ export default function Register() {
           label="Confirm Password"
           variant="outlined"
           size="small"
+          type="password"
           required
           error={userDataError.repeatPassword}
           helperText={
