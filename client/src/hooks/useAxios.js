@@ -1,6 +1,3 @@
-// eslint-disable-next-line react-hooks/exhaustive-deps
-// eslintreact-hooks/exhaustive-deps
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 

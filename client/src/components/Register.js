@@ -1,56 +1,75 @@
 import "./Register.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import useAxios from "../hooks/useAxios";
 import { useState } from "react";
 
 export default function Register() {
   const [userData, setUserData] = useState({
-    username: null,
-    email: null,
-    password: null,
-    repeatPassword: null,
+    username: "",
+    email: "",
+    password: "",
+    repeatPassword: "",
   });
 
-  const [userDataError, setUserDataError] = useState({
+  const [userDataFormError, setUserDataFormError] = useState({
     username: false,
     email: false,
     password: false,
     repeatPassword: false,
-    repeatPasswordErrorMessage: "",
+    repeatPasswordFormErrorMessage: "",
   });
 
   const handleChange = (e) => {
-    setUserData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setUserData((prevData) => ({
+      ...prevData,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = () => {
-    setUserDataError({
+    let error = false;
+
+    setUserDataFormError({
       username: false,
       email: false,
       password: false,
       repeatPassword: false,
-      repeatPasswordErrorMessage: "",
+      repeatPasswordFormErrorMessage: "",
     });
 
     if (!userData.username) {
-      setUserDataError((prevData) => ({ ...prevData, username: true }));
+      setUserDataFormError((prevData) => ({ ...prevData, username: true }));
+      error = true;
     }
     if (!userData.email) {
-      setUserDataError((prevData) => ({ ...prevData, email: true }));
+      setUserDataFormError((prevData) => ({ ...prevData, email: true }));
+      error = true;
     }
     if (!userData.password) {
-      setUserDataError((prevData) => ({ ...prevData, password: true }));
+      setUserDataFormError((prevData) => ({ ...prevData, password: true }));
+      error = true;
     }
     if (!userData.repeatPassword) {
-      setUserDataError((prevData) => ({ ...prevData, repeatPassword: true }));
+      setUserDataFormError((prevData) => ({
+        ...prevData,
+        repeatPassword: true,
+      }));
+      error = true;
     }
     if (userData.password !== userData.repeatPassword) {
-      setUserDataError((prevData) => ({
+      setUserDataFormError((prevData) => ({
         ...prevData,
         password: true,
         repeatPassword: true,
-        repeatPasswordErrorMessage: "Passwords do not match",
+        repeatPasswordFormErrorMessage: "Passwords do not match",
       }));
+      error = true;
+    }
+
+    if (!error) {
+      //submit data to database
+      //Also include toast ?? maybe
     }
   };
 
@@ -66,7 +85,7 @@ export default function Register() {
           size="small"
           required
           type="text"
-          error={userDataError.username}
+          error={userDataFormError.username}
         />
         <TextField
           onChange={(e) => handleChange(e)}
@@ -77,7 +96,7 @@ export default function Register() {
           size="small"
           type="email"
           required
-          error={userDataError.email}
+          error={userDataFormError.email}
         />
         <TextField
           onChange={(e) => handleChange(e)}
@@ -87,11 +106,11 @@ export default function Register() {
           variant="outlined"
           size="small"
           required
-          error={userDataError.password}
+          error={userDataFormError.password}
           type="password"
           helperText={
-            userDataError.repeatPasswordErrorMessage
-              ? userDataError.repeatPasswordErrorMessage
+            userDataFormError.repeatPasswordFormErrorMessage
+              ? userDataFormError.repeatPasswordFormErrorMessage
               : ""
           }
         />
@@ -104,10 +123,10 @@ export default function Register() {
           size="small"
           type="password"
           required
-          error={userDataError.repeatPassword}
+          error={userDataFormError.repeatPassword}
           helperText={
-            userDataError.repeatPasswordErrorMessage
-              ? userDataError.repeatPasswordErrorMessage
+            userDataFormError.repeatPasswordFormErrorMessage
+              ? userDataFormError.repeatPasswordFormErrorMessage
               : ""
           }
         />

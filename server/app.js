@@ -1,16 +1,19 @@
-const dbConnection = require("./config/dbConnection");
 const express = require("express");
 const morgan = require("morgan");
 const app = express();
 
-dbConnection.authenticate().then(() => {
-  console.log("Authenticated, works!");
-});
+//Models
+const User = require("./models/User");
+
+//Synchronize any newly added models to our database
+(async () => {
+  await User.sync();
+})();
 
 //Request logger
 app.use(morgan("tiny"));
 
-//Parsers for requests
+//Body parsers for requests
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
