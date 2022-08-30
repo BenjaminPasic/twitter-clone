@@ -1,10 +1,18 @@
 import "./Register.css";
+import toast, { Toaster } from "react-hot-toast";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useAxios from "../hooks/useAxios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Register() {
+  const { data, axiosError, isPending, postData } = useAxios(
+    "http://localhost:3001/user",
+    "POST"
+  );
+
+  const [formError, setFormError] = useState(null);
+
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -18,7 +26,24 @@ export default function Register() {
     password: false,
     repeatPassword: false,
     repeatPasswordFormErrorMessage: "",
+    usernameFormErrorMessage: "",
   });
+
+  useEffect(() => {
+    if (axiosError === "Username already exists") {
+      setUserDataFormError((prevData) => ({
+        ...prevData,
+        username: true,
+        usernameFormErrorMessage: axiosError,
+      }));
+    }
+  }, [axiosError]);
+
+  useEffect(() => {
+    if (data) {
+      toast.success("Done");
+    }
+  }, [data]);
 
   const handleChange = (e) => {
     setUserData((prevData) => ({
@@ -28,34 +53,33 @@ export default function Register() {
   };
 
   const handleSubmit = () => {
-    let error = false;
-
     setUserDataFormError({
       username: false,
       email: false,
       password: false,
       repeatPassword: false,
       repeatPasswordFormErrorMessage: "",
+      usernameFormErrorMessage: "",
     });
 
     if (!userData.username) {
       setUserDataFormError((prevData) => ({ ...prevData, username: true }));
-      error = true;
+      setFormError(true);
     }
     if (!userData.email) {
       setUserDataFormError((prevData) => ({ ...prevData, email: true }));
-      error = true;
+      setFormError(true);
     }
     if (!userData.password) {
       setUserDataFormError((prevData) => ({ ...prevData, password: true }));
-      error = true;
+      setFormError(true);
     }
     if (!userData.repeatPassword) {
       setUserDataFormError((prevData) => ({
         ...prevData,
         repeatPassword: true,
       }));
-      error = true;
+      setFormError(true);
     }
     if (userData.password !== userData.repeatPassword) {
       setUserDataFormError((prevData) => ({
@@ -64,17 +88,17 @@ export default function Register() {
         repeatPassword: true,
         repeatPasswordFormErrorMessage: "Passwords do not match",
       }));
-      error = true;
+      setFormError(true);
     }
 
-    if (!error) {
-      //submit data to database
-      //Also include toast ?? maybe
+    if (!formError) {
+      postData(userData);
     }
   };
 
   return (
     <div className="register">
+      <Toaster position="top-right" />
       <form>
         <TextField
           onChange={(e) => handleChange(e)}
@@ -86,6 +110,11 @@ export default function Register() {
           required
           type="text"
           error={userDataFormError.username}
+          helperText={
+            userDataFormError.usernameFormErrorMessage
+              ? userDataFormError.usernameFormErrorMessage
+              : ""
+          }
         />
         <TextField
           onChange={(e) => handleChange(e)}
@@ -130,9 +159,16 @@ export default function Register() {
               : ""
           }
         />
-        <Button sx={{ mt: 2 }} onClick={handleSubmit} variant="contained">
-          Submit
-        </Button>
+        {isPending && (
+          <Button sx={{ mt: 2 }} variant="contained" disabled>
+            Loading
+          </Button>
+        )}
+        {!isPending && (
+          <Button sx={{ mt: 2 }} onClick={handleSubmit} variant="contained">
+            Submit
+          </Button>
+        )}
       </form>
     </div>
   );
