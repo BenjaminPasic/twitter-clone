@@ -26,8 +26,6 @@ export default function useAxios(url, method, headers = null) {
           url,
           signal: controller.signal,
         });
-        console.log("xo");
-        console.log(res.data);
         setData(res.data);
         setIsPending(false);
       } catch (error) {
