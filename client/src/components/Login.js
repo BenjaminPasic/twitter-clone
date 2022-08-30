@@ -1,4 +1,5 @@
 import "./Login.css";
+import { Link } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useAxios from "../hooks/useAxios";
@@ -18,6 +19,8 @@ export default function Login() {
     usernameErrorText: "",
     passwordErrorText: "",
   });
+
+  const [formError, setFormError] = useState(false);
 
   //On initial render, focus the username field
   useEffect(() => {
@@ -41,28 +44,27 @@ export default function Login() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     let error = false;
-
     if (!loginDetails.username) {
-      error = true;
       setLoginDetailsError((prevData) => ({
         ...prevData,
         username: true,
         usernameErrorText: "You need to enter a username",
       }));
+      error = true;
     }
 
     if (!loginDetails.password) {
-      error = true;
       setLoginDetailsError((prevData) => ({
         ...prevData,
         password: true,
         passwordErrorText: "You need to enter a password",
       }));
+      error = true;
     }
 
-    if (!error) {
+    if (!formError) {
       console.log(loginDetails);
     }
   };
@@ -107,6 +109,9 @@ export default function Login() {
         <Button sx={{ mt: 2 }} variant="contained" onClick={handleSubmit}>
           Login
         </Button>
+        <p>
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
       </form>
     </div>
   );

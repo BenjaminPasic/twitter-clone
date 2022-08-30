@@ -6,8 +6,8 @@
 .login form {
   border: 1px solid gray;
   width: 360px;
-  padding: 0px 50px 50px 50px;
-  margin-top: 50px;
+  padding: 0px 50px 10px 50px;
+  margin-top: 70px;
   display: flex;
   flex-direction: column;
 }

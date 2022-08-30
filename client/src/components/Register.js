@@ -13,8 +13,6 @@ export default function Register() {
 
   const usernameRef = useRef(null);
 
-  const [formError, setFormError] = useState(null);
-
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -27,8 +25,10 @@ export default function Register() {
     email: false,
     password: false,
     repeatPassword: false,
-    repeatPasswordFormErrorMessage: "",
     usernameFormErrorMessage: "",
+    emailFormErrorMessage: "",
+    passwordFormErrorMessage: "",
+    repeatPasswordFormErrorMessage: "",
   });
 
   useEffect(() => {
@@ -40,6 +40,7 @@ export default function Register() {
       toast.success("Done");
     }
     if (axiosError === "Username already exists") {
+      console.log("Huh?");
       setUserDataFormError((prevData) => ({
         ...prevData,
         username: true,
@@ -56,6 +57,8 @@ export default function Register() {
   };
 
   const handleSubmit = () => {
+    let error = false;
+
     setUserDataFormError({
       username: false,
       email: false,
@@ -65,24 +68,37 @@ export default function Register() {
       usernameFormErrorMessage: "",
     });
 
-    if (!userData.username) {
-      setUserDataFormError((prevData) => ({ ...prevData, username: true }));
-      setFormError(true);
+    if (userData.username === "") {
+      setUserDataFormError((prevData) => ({
+        ...prevData,
+        username: true,
+        usernameFormErrorMessage: "Username required",
+      }));
+      error = true;
     }
-    if (!userData.email) {
-      setUserDataFormError((prevData) => ({ ...prevData, email: true }));
-      setFormError(true);
+    if (userData.email === "") {
+      setUserDataFormError((prevData) => ({
+        ...prevData,
+        email: true,
+        emailFormErrorMessage: "Email required",
+      }));
+      error = true;
     }
-    if (!userData.password) {
-      setUserDataFormError((prevData) => ({ ...prevData, password: true }));
-      setFormError(true);
+    if (userData.password === "") {
+      setUserDataFormError((prevData) => ({
+        ...prevData,
+        password: true,
+        passwordFormErrorMessage: "Password required",
+      }));
+      error = true;
     }
-    if (!userData.repeatPassword) {
+    if (userData.repeatPassword === "") {
       setUserDataFormError((prevData) => ({
         ...prevData,
         repeatPassword: true,
+        repeatPasswordFormErrorMessage: "Password required",
       }));
-      setFormError(true);
+      error = true;
     }
     if (userData.password !== userData.repeatPassword) {
       setUserDataFormError((prevData) => ({
@@ -91,10 +107,10 @@ export default function Register() {
         repeatPassword: true,
         repeatPasswordFormErrorMessage: "Passwords do not match",
       }));
-      setFormError(true);
+      error = true;
     }
 
-    if (!formError) {
+    if (!error) {
       postData(userData);
     }
   };
@@ -130,6 +146,11 @@ export default function Register() {
           type="email"
           required
           error={userDataFormError.email}
+          helperText={
+            userDataFormError.emailFormErrorMessage
+              ? userDataFormError.emailFormErrorMessage
+              : ""
+          }
         />
         <TextField
           onChange={(e) => handleChange(e)}
@@ -169,7 +190,7 @@ export default function Register() {
           </Button>
         )}
         {!isPending && (
-          <Button sx={{ mt: 2 }} onClick={handleSubmit} variant="contained">
+          <Button sx={{ mt: 2 }} variant="contained" onClick={handleSubmit}>
             Submit
           </Button>
         )}
