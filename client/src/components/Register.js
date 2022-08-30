@@ -3,13 +3,15 @@ import toast, { Toaster } from "react-hot-toast";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useAxios from "../hooks/useAxios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function Register() {
   const { data, axiosError, isPending, postData } = useAxios(
     "http://localhost:3001/user",
     "POST"
   );
+
+  const usernameRef = useRef(null);
 
   const [formError, setFormError] = useState(null);
 
@@ -30,6 +32,13 @@ export default function Register() {
   });
 
   useEffect(() => {
+    usernameRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    if (data) {
+      toast.success("Done");
+    }
     if (axiosError === "Username already exists") {
       setUserDataFormError((prevData) => ({
         ...prevData,
@@ -37,13 +46,7 @@ export default function Register() {
         usernameFormErrorMessage: axiosError,
       }));
     }
-  }, [axiosError]);
-
-  useEffect(() => {
-    if (data) {
-      toast.success("Done");
-    }
-  }, [data]);
+  }, [data, axiosError]);
 
   const handleChange = (e) => {
     setUserData((prevData) => ({
@@ -101,6 +104,7 @@ export default function Register() {
       <Toaster position="top-right" />
       <form>
         <TextField
+          inputRef={usernameRef}
           onChange={(e) => handleChange(e)}
           name="username"
           margin="normal"

@@ -6,9 +6,14 @@
 .login form {
   border: 1px solid gray;
   width: 360px;
-  padding: 50px;
+  padding: 0px 50px 50px 50px;
   margin-top: 50px;
   display: flex;
   flex-direction: column;
-  column-gap: 10px;
+}
+
+.login .title {
+  color: black;
+  margin: 0;
+  padding-top: 20px;
 }

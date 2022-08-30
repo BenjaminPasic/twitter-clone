@@ -2,9 +2,11 @@ import "./Login.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useAxios from "../hooks/useAxios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function Login() {
+  const usernameRef = useRef(null);
+
   const [loginDetails, setLoginDetails] = useState({
     username: "",
     password: "",
@@ -17,6 +19,21 @@ export default function Login() {
     passwordErrorText: "",
   });
 
+  //On initial render, focus the username field
+  useEffect(() => {
+    usernameRef.current.focus();
+  }, []);
+
+  //If the user changes their username or password, reset the error state.
+  useEffect(() => {
+    setLoginDetailsError({
+      username: false,
+      password: false,
+      usernameErrorText: "",
+      passwordErrorText: "",
+    });
+  }, [loginDetails.username, loginDetails.password]);
+
   const handleChange = (e) => {
     setLoginDetails({
       ...loginDetails,
@@ -26,13 +43,6 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     let error = false;
-
-    setLoginDetailsError({
-      username: false,
-      password: false,
-      usernameErrorText: "",
-      passwordErrorText: "",
-    });
 
     if (!loginDetails.username) {
       error = true;
@@ -60,7 +70,9 @@ export default function Login() {
   return (
     <div className="login">
       <form>
+        <h2 className="title">Login</h2>
         <TextField
+          inputRef={usernameRef}
           onChange={(e) => handleChange(e)}
           name="username"
           margin="normal"
@@ -92,7 +104,7 @@ export default function Login() {
               : ""
           }
         />
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button sx={{ mt: 2 }} variant="contained" onClick={handleSubmit}>
           Login
         </Button>
       </form>
