@@ -9,8 +9,6 @@ export default function Login() {
   const { data, postData, isPending, error } = useAxios("/user/login", "POST");
   const usernameRef = useRef(null);
 
-  console.log(error);
-
   const [loginDetails, setLoginDetails] = useState({
     username: "",
     password: "",

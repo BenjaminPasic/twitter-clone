@@ -26,6 +26,9 @@ export default function useAxios(urlRoute, method, headers = null) {
           url: "http://localhost:3001" + urlRoute,
           signal: controller.signal,
         });
+        if (res?.data?.token) {
+          localStorage.setItem("token", res.data.token);
+        }
         setData(res.data);
         setIsPending(false);
       } catch (error) {

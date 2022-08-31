@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const app = express();
 
 //Models
@@ -19,6 +20,9 @@ app.use(morgan("tiny"));
 
 //cors
 app.use(cors());
+
+//Cookie parser
+app.use(cookieParser());
 
 //Body parsers for requests
 app.use(express.json());

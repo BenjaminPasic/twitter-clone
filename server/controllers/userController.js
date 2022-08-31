@@ -18,6 +18,7 @@ const loginUser = async (req, res) => {
     if (!user) throw "Invalid username";
     const match = await comparePasswords(password, user.password);
     if (!match) throw "Invalid password";
+    res.status(200).json({ token: "abc123" });
   } catch (error) {
     res.status(401).json({ error });
   }
