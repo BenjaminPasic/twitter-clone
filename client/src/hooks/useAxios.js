@@ -31,6 +31,7 @@ export default function useAxios(urlRoute, method, headers = null) {
         if (res?.data?.token) {
           localStorage.setItem("token", res.data.token);
           setAuth({ token: res.data.token });
+          console.log(res.data.token);
         }
         setData(res.data);
         setIsPending(false);
