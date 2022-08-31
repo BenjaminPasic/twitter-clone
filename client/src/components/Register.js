@@ -7,7 +7,7 @@ import { useEffect, useState, useRef } from "react";
 
 export default function Register() {
   const { data, axiosError, isPending, postData } = useAxios(
-    "http://localhost:3001/user",
+    "/user/register",
     "POST"
   );
 

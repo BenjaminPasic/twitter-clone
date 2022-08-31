@@ -1,7 +1,7 @@
 const User = require("../models/User");
-const { hashPassword } = require("../utils/passwordHasher");
+const { hashPassword, comparePasswords } = require("../utils/passwordHasher");
 
-const registerNewUser = async (req, res) => {
+const registerUser = async (req, res) => {
   const hashedPassword = await hashPassword(req.body.password);
   try {
     await User.create({ ...req.body, password: hashedPassword });
@@ -11,6 +11,19 @@ const registerNewUser = async (req, res) => {
   }
 };
 
+const loginUser = async (req, res) => {
+  const { username, password } = req.body;
+  try {
+    const user = await User.findOne({ where: { username }, raw: true });
+    if (!user) throw "Invalid username";
+    const match = await comparePasswords(password, user.password);
+    if (!match) throw "Invalid password";
+  } catch (error) {
+    res.status(401).json({ error });
+  }
+};
+
 module.exports = {
-  registerNewUser,
+  registerUser,
+  loginUser,
 };

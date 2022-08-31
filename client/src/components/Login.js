@@ -6,7 +6,10 @@ import useAxios from "../hooks/useAxios";
 import { useEffect, useState, useRef } from "react";
 
 export default function Login() {
+  const { data, postData, isPending, error } = useAxios("/user/login", "POST");
   const usernameRef = useRef(null);
+
+  console.log(error);
 
   const [loginDetails, setLoginDetails] = useState({
     username: "",
@@ -64,8 +67,8 @@ export default function Login() {
       error = true;
     }
 
-    if (!formError) {
-      console.log(loginDetails);
+    if (!error) {
+      postData(loginDetails);
     }
   };
 
@@ -94,7 +97,7 @@ export default function Login() {
           onChange={(e) => handleChange(e)}
           name="password"
           margin="normal"
-          label="Username"
+          label="Password"
           variant="outlined"
           size="small"
           required

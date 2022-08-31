@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function useAxios(url, method, headers = null) {
+export default function useAxios(urlRoute, method, headers = null) {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [axiosError, setAxiosError] = useState(null);
@@ -23,12 +23,13 @@ export default function useAxios(url, method, headers = null) {
       try {
         const res = await axios({
           ...options,
-          url,
+          url: "http://localhost:3001" + urlRoute,
           signal: controller.signal,
         });
         setData(res.data);
         setIsPending(false);
       } catch (error) {
+        console.log(error);
         setAxiosError(error.response.data.error);
         setIsPending(false);
       }
