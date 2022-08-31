@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useAuth from "./useAuth";
 import axios from "axios";
 
 export default function useAxios(urlRoute, method, headers = null) {
@@ -6,6 +7,7 @@ export default function useAxios(urlRoute, method, headers = null) {
   const [isPending, setIsPending] = useState(false);
   const [axiosError, setAxiosError] = useState(null);
   const [options, setOptions] = useState(null);
+  const { setAuth } = useAuth();
 
   const postData = (postData) => {
     setOptions({
@@ -28,6 +30,7 @@ export default function useAxios(urlRoute, method, headers = null) {
         });
         if (res?.data?.token) {
           localStorage.setItem("token", res.data.token);
+          setAuth({ token: res.data.token });
         }
         setData(res.data);
         setIsPending(false);
