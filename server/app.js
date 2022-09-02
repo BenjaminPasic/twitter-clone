@@ -1,7 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
 const app = express();
 
 //Models
@@ -19,10 +18,7 @@ const userRoutes = require("./routes/userRoutes");
 app.use(morgan("tiny"));
 
 //cors
-app.use(cors());
-
-//Cookie parser
-app.use(cookieParser());
+app.use(cors({ origin: true, credentials: true, exposedHeaders: ["Auth"] }));
 
 //Body parsers for requests
 app.use(express.json());

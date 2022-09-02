@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const { hashPassword, comparePasswords } = require("../utils/passwordHasher");
+const { createToken, checkToken } = require("../utils/jwtTokenCreator");
 
 const registerUser = async (req, res) => {
   const hashedPassword = await hashPassword(req.body.password);
@@ -18,13 +19,22 @@ const loginUser = async (req, res) => {
     if (!user) throw "Invalid username";
     const match = await comparePasswords(password, user.password);
     if (!match) throw "Invalid password";
-    res.status(200).json({ token: "abc123" });
+    const token = await createToken({ user_id: user.id });
+    res.status(200).json({ token });
   } catch (error) {
+    console.log(error);
     res.status(401).json({ error });
   }
+};
+
+const verifyToken = async (req, res) => {
+  const token = req.headers.auth;
+  const valid = await checkToken(token);
+  res.status(200).json({ isValid: valid });
 };
 
 module.exports = {
   registerUser,
   loginUser,
+  verifyToken,
 };

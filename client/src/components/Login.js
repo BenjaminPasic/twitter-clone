@@ -1,5 +1,5 @@
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useAxios from "../hooks/useAxios";
@@ -8,6 +8,7 @@ import { useEffect, useState, useRef } from "react";
 export default function Login() {
   const { data, postData, isPending, error } = useAxios("/user/login", "POST");
   const usernameRef = useRef(null);
+  const navigate = useNavigate();
 
   const [loginDetails, setLoginDetails] = useState({
     username: "",
@@ -20,8 +21,6 @@ export default function Login() {
     usernameErrorText: "",
     passwordErrorText: "",
   });
-
-  const [formError, setFormError] = useState(false);
 
   //On initial render, focus the username field
   useEffect(() => {
@@ -67,6 +66,7 @@ export default function Login() {
 
     if (!error) {
       postData(loginDetails);
+      //navigate("/");
     }
   };
 

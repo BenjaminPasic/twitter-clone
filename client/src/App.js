@@ -11,11 +11,11 @@ function App() {
     <main className="App">
       <Navbar />
       <Routes>
+        <Route exact path="/login" element={<Login />}></Route>
+        <Route exact path="/register" element={<Register />}></Route>
         <Route element={<RouteGuard />}>
-          <Route path="/" element={<Home />}></Route>
+          <Route exact path="/" element={<Home />}></Route>
         </Route>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/register" element={<Register />}></Route>
       </Routes>
     </main>
   );
