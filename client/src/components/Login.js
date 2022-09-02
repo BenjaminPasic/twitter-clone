@@ -66,7 +66,9 @@ export default function Login() {
 
     if (!error) {
       postData(loginDetails);
-      //navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     }
   };
 
