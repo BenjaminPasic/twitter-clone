@@ -4,11 +4,13 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useAxios from "../hooks/useAxios";
 import { useEffect, useState, useRef } from "react";
+import useAuth from "../hooks/useAuth";
 
 export default function Login() {
   const { data, postData, isPending, error } = useAxios("/user/login", "POST");
   const usernameRef = useRef(null);
   const navigate = useNavigate();
+  const { setIsAuth } = useAuth();
 
   const [loginDetails, setLoginDetails] = useState({
     username: "",
@@ -68,6 +70,7 @@ export default function Login() {
       postData(loginDetails);
       setTimeout(() => {
         navigate("/");
+        setIsAuth(true);
       }, 1500);
     }
   };

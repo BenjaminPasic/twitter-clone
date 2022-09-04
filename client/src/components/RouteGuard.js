@@ -1,32 +1,35 @@
 import { Outlet, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import useAuth from "../hooks/useAuth.js";
 import axios from "axios";
 
 export default function RouteGuard() {
-  const [isAuth, setIsAuth] = useState(null);
+  const [isTokenValid, setIsTokenValid] = useState(null);
+  const { setIsAuth } = useAuth();
 
   useEffect(() => {
     const verifyToken = async () => {
-      try {
-        const res = await axios.get("http://localhost:3001/user/verifyToken", {
-          headers: { Auth: localStorage.getItem("token") },
-        });
-        setIsAuth(true);
-      } catch (error) {
-        console.log(error);
+      const res = await axios.get("http://localhost:3001/user/verifyToken", {
+        headers: { Auth: localStorage.getItem("token") },
+      });
+      if (res?.data?.isValid) {
+        setIsTokenValid(true);
+      } else {
+        setIsTokenValid(false);
+        setIsAuth(false);
       }
     };
 
     if (!localStorage.getItem("token")) {
-      setIsAuth(false);
+      setIsTokenValid(false);
     } else {
       verifyToken();
     }
   }, []);
 
-  return isAuth == null ? (
+  return isTokenValid == null ? (
     <p>Loading...</p>
-  ) : isAuth ? (
+  ) : isTokenValid ? (
     <Outlet />
   ) : (
     <Navigate to="/login" />
