@@ -1,0 +1,10 @@
+.home {
+  display: flex;
+  justify-content: center;
+}
+
+.home .main {
+  width: 650px;
+  height: 100vh;
+  background: white;
+}

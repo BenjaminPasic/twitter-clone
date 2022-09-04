@@ -1,7 +1,12 @@
+import "./Home.css";
+import PostStatus from "./PostStatus";
+
 export default function Home() {
   return (
-    <div>
-      <div>Home</div>
+    <div className="home">
+      <div className="main">
+        <PostStatus />
+      </div>
     </div>
   );
 }

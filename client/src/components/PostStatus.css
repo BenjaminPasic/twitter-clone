@@ -1,0 +1,28 @@
+.post-status {
+  border-bottom: 1px solid #a7bcff;
+  width: 100%;
+  padding: 0 20px 20px 20px;
+}
+
+.post-status .upper-part {
+  display: flex;
+}
+
+.post-status .lower-part {
+  margin-top: 10px;
+}
+
+.post-status .lower-part .button {
+  display: block;
+  margin-left: auto;
+  background-color: #a7bcff;
+}
+
+.post-status .avatar {
+  margin-top: 10px;
+}
+
+.post-status .text-field {
+  margin-left: 10px;
+  margin-top: 10px;
+}

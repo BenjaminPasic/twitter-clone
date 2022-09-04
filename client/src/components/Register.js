@@ -119,6 +119,7 @@ export default function Register() {
     <div className="register">
       <Toaster position="top-right" />
       <form>
+        <h2>Register</h2>
         <TextField
           inputRef={usernameRef}
           onChange={(e) => handleChange(e)}

@@ -4,11 +4,17 @@
 }
 
 .register form {
-  border: 1px solid gray;
+  background: white;
+  border-radius: 10px;
   width: 360px;
-  padding: 50px;
+  padding: 10px 50px 50px 50px;
   margin-top: 50px;
   display: flex;
   flex-direction: column;
   column-gap: 10px;
+}
+
+.register h2 {
+  margin: 0;
+  padding: 20px 0 10px 0;
 }

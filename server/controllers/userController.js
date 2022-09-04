@@ -30,7 +30,11 @@ const loginUser = async (req, res) => {
 const verifyToken = async (req, res) => {
   const token = req.headers.auth;
   const valid = await checkToken(token);
-  res.status(200).json({ isValid: valid });
+  if (valid) {
+    res.status(200).json({ isValid: valid });
+  } else {
+    res.json({ isValid: valid });
+  }
 };
 
 module.exports = {

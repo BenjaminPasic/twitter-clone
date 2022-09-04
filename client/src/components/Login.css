@@ -4,7 +4,8 @@
 }
 
 .login form {
-  border: 1px solid gray;
+  background: white;
+  border-radius: 10px;
   width: 360px;
   padding: 0px 50px 10px 50px;
   margin-top: 70px;

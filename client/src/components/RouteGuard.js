@@ -14,6 +14,7 @@ export default function RouteGuard() {
       });
       if (res?.data?.isValid) {
         setIsTokenValid(true);
+        setIsAuth(true);
       } else {
         setIsTokenValid(false);
         setIsAuth(false);
