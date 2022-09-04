@@ -10,7 +10,7 @@ export default function RouteGuard() {
   useEffect(() => {
     const verifyToken = async () => {
       const res = await axios.get("http://localhost:3001/user/verifyToken", {
-        headers: { Auth: localStorage.getItem("token") },
+        headers: { auth: localStorage.getItem("token") },
       });
       if (res?.data?.isValid) {
         setIsTokenValid(true);

@@ -1,6 +1,10 @@
 const User = require("../models/User");
 const { hashPassword, comparePasswords } = require("../utils/passwordHasher");
-const { createToken, checkToken } = require("../utils/jwtTokenCreator");
+const {
+  createToken,
+  checkToken,
+  decodeToken,
+} = require("../utils/jwtTokenCreator");
 
 const registerUser = async (req, res) => {
   const hashedPassword = await hashPassword(req.body.password);
@@ -37,8 +41,18 @@ const verifyToken = async (req, res) => {
   }
 };
 
+const getUserIdByToken = async (req, res) => {
+  const token = req.headers.auth;
+  const valid = await checkToken(token);
+  if (valid) {
+    const { user_id } = await decodeToken(token);
+    res.status(200).json({ user_id });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   verifyToken,
+  getUserIdByToken,
 };

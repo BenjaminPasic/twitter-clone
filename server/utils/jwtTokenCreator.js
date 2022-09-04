@@ -19,4 +19,13 @@ const checkToken = async (token) => {
   }
 };
 
-module.exports = { createToken, checkToken };
+const decodeToken = async (token) => {
+  try {
+    const data = await jwt.verify(token, "tempKey");
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+module.exports = { createToken, checkToken, decodeToken };
