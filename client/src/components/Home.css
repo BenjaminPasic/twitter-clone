@@ -1,10 +1,18 @@
 .home {
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 .home .main {
   width: 650px;
   height: 100vh;
   background: white;
+  overflow: scroll;
+  border-radius: 10px;
+}
+
+.home .progress-bar {
+  margin-top: 50px;
 }

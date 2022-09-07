@@ -5,28 +5,26 @@ import axios from "axios";
 
 export default function RouteGuard() {
   const [isTokenValid, setIsTokenValid] = useState(null);
-  const { setIsAuth } = useAuth();
+  const { userInfo } = useAuth();
 
   useEffect(() => {
     const verifyToken = async () => {
-      const res = await axios.get("http://localhost:3001/user/verifyToken", {
-        headers: { auth: localStorage.getItem("token") },
-      });
-      if (res?.data?.isValid) {
-        setIsTokenValid(true);
-        setIsAuth(true);
-      } else {
+      try {
+        const res = await axios.get("http://localhost:3001/user/verifyToken", {
+          headers: { auth: localStorage.getItem("token") },
+        });
+        if (res?.data.isValid) setIsTokenValid(true);
+      } catch (error) {
+        console.log(error);
         setIsTokenValid(false);
-        setIsAuth(false);
       }
     };
-
     if (!localStorage.getItem("token")) {
-      setIsTokenValid(false);
+      setIsTokenValid(true);
     } else {
       verifyToken();
     }
-  }, []);
+  });
 
   return isTokenValid == null ? (
     <p>Loading...</p>

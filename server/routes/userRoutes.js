@@ -4,15 +4,16 @@ const {
   registerUser,
   loginUser,
   verifyToken,
-  getUserIdByToken,
+  getUserInfoByToken,
 } = require("../controllers/userController");
+const tokenVerification = require("../middleware/tokenVerification");
 
 router.post("/register", registerUser);
 
 router.post("/login", loginUser);
 
-router.get("/verifyToken", verifyToken);
+router.get("/verifyToken", tokenVerification, verifyToken);
 
-router.get("/getUserIdByToken", getUserIdByToken);
+router.get("/getUserInfoByToken", getUserInfoByToken);
 
 module.exports = router;

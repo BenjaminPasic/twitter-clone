@@ -1,0 +1,39 @@
+.post {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid gainsboro;
+}
+
+.post .post-data {
+  text-align: left;
+  padding-left: 20px;
+}
+
+.post .post-data .username {
+  display: inline;
+  font-weight: bold;
+}
+
+.post .post-data .username::before {
+  content: "@";
+}
+
+.post .post-data .username:hover {
+  text-decoration: underline;
+  color: lightblue;
+  cursor: pointer;
+}
+
+.post .post-data .date {
+  display: inline;
+  padding-left: 10px;
+  color: rgb(55, 65, 81);
+}
+
+.post .post-data .post-body {
+  margin: 0;
+  padding-top: 4px;
+  text-align: justify;
+  color: rgb(55, 65, 81);
+  padding-right: 10px;
+}

@@ -2,6 +2,7 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
+import { CircularProgress } from "@mui/material";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import RouteGuard from "./components/RouteGuard";
@@ -10,27 +11,31 @@ import { useEffect } from "react";
 import axios from "axios";
 
 function App() {
-  const { currentUserId, setCurrentUserId } = useAuth();
+  const { userInfo, setUserInfo } = useAuth();
 
   useEffect(() => {
-    const getUserId = async () => {
-      const res = await axios.get(
-        "http://localhost:3001/user/getUserIdByToken",
-        {
-          headers: { auth: localStorage.getItem("token") },
+    const getUserInfo = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:3001/user/getUserInfoByToken",
+          {
+            headers: { auth: localStorage.getItem("token") },
+          }
+        );
+        setUserInfo({ user_id: res.data.user_id, username: res.data.username });
+      } catch (error) {
+        if (error?.response?.data?.error === "Invalid token") {
+          window.location.href = "/login";
         }
-      );
-      if (res?.data?.user_id) {
-        setCurrentUserId(res.data.user_id);
       }
     };
 
-    if (!currentUserId && localStorage.getItem("token")) {
-      getUserId();
+    if (localStorage.getItem("token")) {
+      getUserInfo();
     }
   }, []);
 
-  return (
+  return userInfo ? (
     <main className="App">
       <Navbar />
       <Routes>
@@ -41,6 +46,8 @@ function App() {
         </Route>
       </Routes>
     </main>
+  ) : (
+    <CircularProgress />
   );
 }
 

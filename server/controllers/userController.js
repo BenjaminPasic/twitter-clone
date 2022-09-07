@@ -23,7 +23,10 @@ const loginUser = async (req, res) => {
     if (!user) throw "Invalid username";
     const match = await comparePasswords(password, user.password);
     if (!match) throw "Invalid password";
-    const token = await createToken({ user_id: user.id });
+    const token = await createToken({
+      user_id: user.id,
+      username: user.username,
+    });
     res.status(200).json({ token });
   } catch (error) {
     console.log(error);
@@ -31,22 +34,18 @@ const loginUser = async (req, res) => {
   }
 };
 
+//GET request token verification
 const verifyToken = async (req, res) => {
-  const token = req.headers.auth;
-  const valid = await checkToken(token);
-  if (valid) {
-    res.status(200).json({ isValid: valid });
-  } else {
-    res.json({ isValid: valid });
-  }
+  res.status(200).json({ isValid: "valid" });
 };
 
-const getUserIdByToken = async (req, res) => {
-  const token = req.headers.auth;
-  const valid = await checkToken(token);
-  if (valid) {
-    const { user_id } = await decodeToken(token);
-    res.status(200).json({ user_id });
+const getUserInfoByToken = async (req, res) => {
+  try {
+    const token = req.headers.auth;
+    const { user_id, username } = await decodeToken(token);
+    res.status(200).json({ user_id, username });
+  } catch (error) {
+    res.status(401).json({ error: "Token is invalid" });
   }
 };
 
@@ -54,5 +53,5 @@ module.exports = {
   registerUser,
   loginUser,
   verifyToken,
-  getUserIdByToken,
+  getUserInfoByToken,
 };

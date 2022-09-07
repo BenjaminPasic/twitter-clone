@@ -1,11 +1,15 @@
 .post-status {
-  border-bottom: 1px solid #a7bcff;
-  width: 100%;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  margin: 20px 0 20px 0;
+  width: 650px;
+  border-radius: 20px;
   padding: 0 20px 20px 20px;
+  background-color: rgb(249 250 251);
 }
 
 .post-status .upper-part {
   display: flex;
+  padding: 10px;
 }
 
 .post-status .lower-part {
@@ -15,7 +19,8 @@
 .post-status .lower-part .button {
   display: block;
   margin-left: auto;
-  background-color: #a7bcff;
+  background-color: #0088a9;
+  padding: 7px 30px 7px 30px;
 }
 
 .post-status .avatar {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-export default function useAxios(urlRoute, method, headers = null) {
+export default function useAxios(urlRoute, method) {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [axiosError, setAxiosError] = useState(null);
@@ -25,6 +25,7 @@ export default function useAxios(urlRoute, method, headers = null) {
           ...options,
           url: "http://localhost:3001" + urlRoute,
           signal: controller.signal,
+          headers: { auth: localStorage.getItem("token") },
         });
         if (res?.data?.token) {
           localStorage.setItem("token", res.data.token);
@@ -33,7 +34,10 @@ export default function useAxios(urlRoute, method, headers = null) {
         setIsPending(false);
       } catch (error) {
         console.log(error);
-        setAxiosError(error.response.data.error);
+        setAxiosError(error?.response.data.error);
+        if (error?.response?.data?.error === "Invalid token") {
+          window.location.href = "/login";
+        }
         setIsPending(false);
       }
     };
@@ -45,9 +49,9 @@ export default function useAxios(urlRoute, method, headers = null) {
       fetchData(options);
     }
 
-    return () => {
-      controller.abort();
-    };
+    // return () => {
+    //   controller.abort();
+    // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
 

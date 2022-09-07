@@ -10,7 +10,7 @@ export default function Login() {
   const { data, postData, isPending, error } = useAxios("/user/login", "POST");
   const usernameRef = useRef(null);
   const navigate = useNavigate();
-  const { setIsAuth } = useAuth();
+  const { setIsAuth, setUserInfo } = useAuth();
 
   const [loginDetails, setLoginDetails] = useState({
     username: "",
@@ -71,6 +71,7 @@ export default function Login() {
       setTimeout(() => {
         navigate("/");
         setIsAuth(true);
+        setUserInfo(loginDetails.username);
       }, 1500);
     }
   };
