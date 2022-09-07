@@ -67,12 +67,16 @@ export default function Login() {
     }
 
     if (!error) {
-      postData(loginDetails);
-      setTimeout(() => {
-        navigate("/");
-        setIsAuth(true);
-        setUserInfo(loginDetails.username);
-      }, 1500);
+      try {
+        postData(loginDetails);
+        setTimeout(() => {
+          navigate("/");
+          setIsAuth(true);
+          setUserInfo(loginDetails.username);
+        }, 1500);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

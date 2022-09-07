@@ -11,7 +11,7 @@ import { useEffect } from "react";
 import axios from "axios";
 
 function App() {
-  const { userInfo, setUserInfo } = useAuth();
+  const { userInfo, setUserInfo, setIsAuth } = useAuth();
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -23,6 +23,7 @@ function App() {
           }
         );
         setUserInfo({ user_id: res.data.user_id, username: res.data.username });
+        setIsAuth(true);
       } catch (error) {
         if (error?.response?.data?.error === "Invalid token") {
           window.location.href = "/login";
