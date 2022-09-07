@@ -1,7 +1,7 @@
 import TextField from "@mui/material/TextField";
 import { Avatar } from "@mui/material";
 import Button from "@mui/material/Button";
-import "./PostStatus.css";
+import "./StatusUpdate.css";
 import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
 import axios from "axios";
